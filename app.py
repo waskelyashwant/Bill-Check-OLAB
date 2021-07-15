@@ -130,7 +130,7 @@ def jansoochna_zone(index, k_no, driver, sheet):
 
 
 def starting(real_list, lista, result, mapping_dict):
-    driver = webdriver.Chrome("chromedriver.exe")
+    driver = webdriver.Chrome("CHROMEDRIVER_PATH")
     x=len(lista)
     for k in range(lista[0],lista[1]):
         distr = real_list[k][1].value
