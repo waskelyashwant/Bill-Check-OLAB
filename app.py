@@ -11,6 +11,12 @@ import time
 import pandas as pd
 import threading
 
+chrome_options = webdriver.ChromeOptions()
+chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--no-sandbox")
+
 app = Flask(__name__, template_folder='templates')
 
 @app.route('/')
@@ -130,7 +136,7 @@ def jansoochna_zone(index, k_no, driver, sheet):
 
 
 def starting(real_list, lista, result, mapping_dict):
-    driver = webdriver.Chrome("CHROMEDRIVER_PATH")
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     x=len(lista)
     for k in range(lista[0],lista[1]):
         distr = real_list[k][1].value
