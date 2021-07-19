@@ -22,7 +22,6 @@ app = Flask(__name__, template_folder='templates')
 @app.route('/')
 def main():
     return render_template('app.html')
-
 # @app.route('/send')
 # def send():
 #     return render_template('app.html')
@@ -37,12 +36,12 @@ def jaipur_zone(k_no, driver,ags):
         ul = x.find_element_by_tag_name("ul")
         li = ul.find_elements_by_tag_name("li")
         li[26].click()
-        time.sleep(2)
+        time.sleep(4)
         x1 =Select(driver.find_element_by_id("ELECTRICITY>hfc-states-rajasthan"))
         # x1.select_by_index(1)
         # x1._setSelected
         # webdriver.ActionChains(driver).send_keys(Keys.ENTER).perform()
-        # time.sleep(2)
+        # time.sleep(4)
         # x1 =driver.find_element_by_id("ELECTRICITY>hfc-states-rajasthan").click()
         x = driver.find_elements_by_class_name("a-dropdown-prompt")
         x[1].click()
@@ -70,7 +69,7 @@ def jaipur_zone(k_no, driver,ags):
     except:
         return "Unable to check"
     
-    time.sleep(2)
+    time.sleep(4)
 
 def jodhpur_zone(k_no, driver):
     try:
@@ -95,13 +94,13 @@ def ajmer_zone(index, k_no, driver, sheet):
     link = "https://jansoochna.rajasthan.gov.in/Services/DynamicControls"
     driver.get(link)
     driver.find_element_by_partial_link_text("Know about your Electricity Bill Payment Information - AVVNL").click()
-    time.sleep(2)
+    time.sleep(4)
     driver.find_element_by_id("Enter_your_K_number").click()
 
     driver.find_element_by_id("Enter_your_K_number").clear()
     driver.find_element_by_id("Enter_your_K_number").send_keys(k_no)  
     driver.find_element_by_id("btnSubmit").click()
-    time.sleep(2)   
+    time.sleep(4)   
     amnt= driver.find_element_by_xpath("/html/body/div[1]/section/div[3]/div/div/div/div/div[3]/div[2]/div/div[1]/div[2]/table/tbody/tr[1]/td[9]")
     
     # print(asds.get_attribute("innerHTML"))
@@ -118,12 +117,12 @@ def jansoochna_zone(index, k_no, driver, sheet):
     link = "https://jansoochna.rajasthan.gov.in/Services/DynamicControls"
     driver.get(link)
     driver.find_element_by_partial_link_text("Know about your Electricity Bill Payment Information - JDVVNL").click()
-    time.sleep(2)
+    time.sleep(4)
     driver.find_element_by_id("Enter_your_K_number").click()
     driver.find_element_by_id("Enter_your_K_number").clear()
     driver.find_element_by_id("Enter_your_K_number").send_keys(k_no.value)  
     driver.find_element_by_id("btnSubmit").click()
-    time.sleep(2)   
+    time.sleep(4)   
     amnt= driver.find_element_by_xpath("/html/body/div[1]/section/div[3]/div/div/div/div/div[3]/div[2]/div/div[1]/div[2]/table/tbody/tr[1]/td[12]")
     amnt = amnt.get_attribute("innerHTML")
     print(amnt)
@@ -136,7 +135,8 @@ def jansoochna_zone(index, k_no, driver, sheet):
 
 
 def starting(real_list, lista, result, mapping_dict):
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+    # driver = webdriver.Chrome(executable_path=os.environ.get("chromedriver.exe"), chrome_options=chrome_options)
+    driver = webdriver.Chrome("chromedriver.exe")
     x=len(lista)
     for k in range(lista[0],lista[1]):
         distr = real_list[k][1].value
@@ -227,7 +227,7 @@ def login():
             res=[None]*(y+x%20)
             results.append(res)
 
-        for v in range(19,20):
+        for v in range(0,20):
             t=threading.Thread(target=starting, args=(real_list,main_list[v],results[v], mapping_dict))
             t.start()
             threads.append(t)
@@ -237,7 +237,7 @@ def login():
 
         print(results)
         main_result=[]
-        for v in range(19,20):
+        for v in range(0,20):
             for u in range(0,len(results[v])):
                 if results[v][u]!=None:
                     main_result.append(results[v][u])
