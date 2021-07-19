@@ -16,6 +16,7 @@ chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 app = Flask(__name__, template_folder='templates')
+
 @app.route('/')
 def main():
     return render_template('app.html')
