@@ -124,7 +124,7 @@ def jansoochna_zone(index, k_no, driver, sheet):
     else:
         sheet.cell(row = index, column = 6).value = "unpaid"
 def starting(real_list, lista, result, mapping_dict):
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+#     driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     x=len(lista)
     for k in range(lista[0],lista[1]):
         distr = real_list[k][1].value
@@ -132,7 +132,9 @@ def starting(real_list, lista, result, mapping_dict):
         k_no=real_list[k][3].value
         if zone=='Jodhpur':
             print("Jodhpur")
+            driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
             status = jodhpur_zone(k_no,driver)
+            driver.close()
             print("Processed")
         elif zone=='Jaipur':
             ags = real_list[k][4].value
@@ -142,7 +144,7 @@ def starting(real_list, lista, result, mapping_dict):
         else:
             status = jansoochna_zone(k_no, driver)
         result.append(status)
-    driver.close()
+#     driver.close()
     
 @app.route('/login', methods=['POST', 'GET'])
 def login():
