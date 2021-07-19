@@ -66,9 +66,11 @@ def jaipur_zone(k_no, driver,ags):
     time.sleep(2)
 def jodhpur_zone(k_no, driver):
     try:
+        print("Inside Jodhpur")
         link = "http://wss.rajdiscoms.com/HDFC_QUICKPAY/index"
         driver.get(link)
         time.sleep(5)
+        print("waiting")
         driver.find_element_by_id("txtKno").click()
         driver.find_element_by_id("txtKno").clear()
         driver.find_element_by_id("txtKno").send_keys(k_no)
@@ -129,7 +131,9 @@ def starting(real_list, lista, result, mapping_dict):
         zone=mapping_dict[distr]
         k_no=real_list[k][3].value
         if zone=='Jodhpur':
+            print("Jodhpur")
             status = jodhpur_zone(k_no,driver)
+            print("Processed")
         elif zone=='Jaipur':
             ags = real_list[k][4].value
             status = jaipur_zone(k_no,driver,ags)
@@ -139,6 +143,7 @@ def starting(real_list, lista, result, mapping_dict):
             status = jansoochna_zone(k_no, driver)
         result.append(status)
     driver.close()
+    
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     error = None
