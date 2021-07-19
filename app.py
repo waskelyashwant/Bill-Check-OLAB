@@ -10,11 +10,14 @@ import os
 import time
 import pandas as pd
 import threading
+
+
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
+
 app = Flask(__name__, template_folder='templates')
 
 @app.route('/')
@@ -23,6 +26,8 @@ def main():
 # @app.route('/send')
 # def send():
 #     return render_template('app.html')
+
+
 def jaipur_zone(k_no, driver,ags):
     try:
         link = "https://www.amazon.in/hfc/bill/electricity?ref_=apay_deskhome_Electricity"
@@ -65,6 +70,8 @@ def jaipur_zone(k_no, driver,ags):
         return "Unable to check"
     
     time.sleep(2)
+
+
 def jodhpur_zone(k_no, driver):
     try:
         print("Inside Jodhpur")
@@ -84,6 +91,8 @@ def jodhpur_zone(k_no, driver):
         print("unable to check")
         return "Unable to check"
     # sheet.cell(row = index, column = 6).value = status
+
+
 def ajmer_zone(index, k_no, driver, sheet):
     link = "https://jansoochna.rajasthan.gov.in/Services/DynamicControls"
     driver.get(link)
@@ -104,6 +113,8 @@ def ajmer_zone(index, k_no, driver, sheet):
     else:
         sheet.cell(row = index, column = 6).value = "unpaid"
         df.save('status.xlsx')
+
+
 def jansoochna_zone(index, k_no, driver, sheet):
     link = "https://jansoochna.rajasthan.gov.in/Services/DynamicControls"
     driver.get(link)
@@ -123,6 +134,8 @@ def jansoochna_zone(index, k_no, driver, sheet):
         sheet.cell(row = index, column = 6).value = "paid"
     else:
         sheet.cell(row = index, column = 6).value = "unpaid"
+
+
 def starting(real_list, lista, result, mapping_dict):
 #     driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     x=len(lista)
@@ -153,11 +166,80 @@ def login():
         data = pd.read_excel(r'mapping.xlsx')
         df1 = pd.DataFrame(data)
         length = len(df1.index)
-        
-        print("start")
-        time.sleep(35)
-        
-        print("Done execution")
+        mapping_dict={}
+        for i in range(0,length):
+            mapping_dict[df1.iloc[i]['Distributor as per file']]=str(df1.iloc[i]['Zone'])
+        print(mapping_dict)
+        f = request.files['file'] 
+        # driver = webdriver.Chrome("chromedriver.exe") 
+        f.save(f.filename)
+        # print(f)  
+        df = openpyxl.load_workbook(f)
+        sheet = df.active
+        # driver = webdriver.Chrome("chromedriver.exe")
+        # for k in sheet:
+        #     if index == 1:
+        #         sheet.cell(row = index, column = 6).value = 'Status'
+        #     else:
+        #         if sheet.cell(row=index, column= 1).value == None:
+        #             break
+                # distr = k[1].value
+                # zone=mapping_dict[distr]
+                # k_no=k[3].value
+                # if zone=='Jodhpur':
+                #     jodhpur_zone(index, k_no,driver, sheet)
+                # elif zone=='Jaipur':
+                #     jaipur_zone(index, k_no,driver, sheet)
+                # elif zone=='Ajmer':
+                #     ajmer_zone(index, k_no, driver, sheet)
+                # else:
+                #     jansoochna_zone(index, k_no, driver, sheet)
+                # df.save('status.xlsx')
+        z=0
+        real_list=[]
+        for k in sheet:
+            if z==0:
+                z+=1
+                continue
+            k=list(k)
+            if k[1].value==None:
+                continue
+            real_list.append(k)
+        x=len(real_list)
+        y=int(x/20)
+        main_list=[[0, y],[y, 2*y],[2*y, 3*y],[3*y, 4*y],[4*y, 5*y],[5*y, 6*y],[6*y, 7*y],[7*y, 8*y],[8*y, 9*y],[9*y, 10*y],
+                   [10*y, 11*y],[11*y, 12*y],[12*y, 13*y],[13*y, 14*y],[14*y, 15*y],[15*y, 16*y],[16*y, 17*y],[17*y, 18*y],[18*y, 19*y],[19*y, 20*y+ x %20]]
+        threads=[]
+        results=[]
+        for i in range(0,20):
+            res=[None]*(y+x%20)
+            results.append(res)
+
+        for v in range(0,20):
+            t=threading.Thread(target=starting, args=(real_list,main_list[v],results[v], mapping_dict))
+            t.start()
+            threads.append(t)
+        for v in threads:
+            v.join()
+
+        print(results)
+        main_result=[]
+        for v in range(0,20):
+            for u in range(0,len(results[v])):
+                if results[v][u]!=None:
+                    main_result.append(results[v][u])
+        index=1
+        sheet.cell(row = index, column = 6).value = 'Status'
+        df.save('status.xlsx')
+        index+=1
+        for k in range(0,len(main_result)):
+            if sheet.cell(row=index, column= 1).value == None:
+                break
+            sheet.cell(row = index, column = 6).value = main_result[k]
+            index+=1
+            df.save('status.xlsx')
+        # driver.close()
+        data = pd.read_excel('status.xlsx')
    
         return render_template("submit.html", data = data.to_html() )
 @app.route('/download', methods=['POST', 'GET'])
