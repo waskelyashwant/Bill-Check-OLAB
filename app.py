@@ -25,8 +25,6 @@ def main():
 # @app.route('/send')
 # def send():
 #     return render_template('app.html')
-
-
 def jaipur_zone(k_no, driver,ags):
     try:
         link = "https://www.amazon.in/hfc/bill/electricity?ref_=apay_deskhome_Electricity"
@@ -36,12 +34,12 @@ def jaipur_zone(k_no, driver,ags):
         ul = x.find_element_by_tag_name("ul")
         li = ul.find_elements_by_tag_name("li")
         li[26].click()
-        time.sleep(4)
+        time.sleep(2)
         x1 =Select(driver.find_element_by_id("ELECTRICITY>hfc-states-rajasthan"))
         # x1.select_by_index(1)
         # x1._setSelected
         # webdriver.ActionChains(driver).send_keys(Keys.ENTER).perform()
-        # time.sleep(4)
+        # time.sleep(2)
         # x1 =driver.find_element_by_id("ELECTRICITY>hfc-states-rajasthan").click()
         x = driver.find_elements_by_class_name("a-dropdown-prompt")
         x[1].click()
@@ -49,7 +47,6 @@ def jaipur_zone(k_no, driver,ags):
         li=ul.find_elements_by_tag_name("li")
         li[0].click() 
         time.sleep(4)
-
         # ags = sheet.cell(row=index, column=5).value
         pk = "Continue to Pay ₹"+ str(ags)+".00"
         driver.find_element_by_id("K Number").click()
@@ -69,8 +66,7 @@ def jaipur_zone(k_no, driver,ags):
     except:
         return "Unable to check"
     
-    time.sleep(4)
-
+    time.sleep(2)
 def jodhpur_zone(k_no, driver):
     try:
         link = "http://wss.rajdiscoms.com/HDFC_QUICKPAY/index"
@@ -88,19 +84,16 @@ def jodhpur_zone(k_no, driver):
     except:
         return "Unable to check"
     # sheet.cell(row = index, column = 6).value = status
-
-
 def ajmer_zone(index, k_no, driver, sheet):
     link = "https://jansoochna.rajasthan.gov.in/Services/DynamicControls"
     driver.get(link)
     driver.find_element_by_partial_link_text("Know about your Electricity Bill Payment Information - AVVNL").click()
-    time.sleep(4)
+    time.sleep(2)
     driver.find_element_by_id("Enter_your_K_number").click()
-
     driver.find_element_by_id("Enter_your_K_number").clear()
     driver.find_element_by_id("Enter_your_K_number").send_keys(k_no)  
     driver.find_element_by_id("btnSubmit").click()
-    time.sleep(4)   
+    time.sleep(2)   
     amnt= driver.find_element_by_xpath("/html/body/div[1]/section/div[3]/div/div/div/div/div[3]/div[2]/div/div[1]/div[2]/table/tbody/tr[1]/td[9]")
     
     # print(asds.get_attribute("innerHTML"))
@@ -111,18 +104,16 @@ def ajmer_zone(index, k_no, driver, sheet):
     else:
         sheet.cell(row = index, column = 6).value = "unpaid"
         df.save('status.xlsx')
-
-
 def jansoochna_zone(index, k_no, driver, sheet):
     link = "https://jansoochna.rajasthan.gov.in/Services/DynamicControls"
     driver.get(link)
     driver.find_element_by_partial_link_text("Know about your Electricity Bill Payment Information - JDVVNL").click()
-    time.sleep(4)
+    time.sleep(2)
     driver.find_element_by_id("Enter_your_K_number").click()
     driver.find_element_by_id("Enter_your_K_number").clear()
     driver.find_element_by_id("Enter_your_K_number").send_keys(k_no.value)  
     driver.find_element_by_id("btnSubmit").click()
-    time.sleep(4)   
+    time.sleep(2)   
     amnt= driver.find_element_by_xpath("/html/body/div[1]/section/div[3]/div/div/div/div/div[3]/div[2]/div/div[1]/div[2]/table/tbody/tr[1]/td[12]")
     amnt = amnt.get_attribute("innerHTML")
     print(amnt)
@@ -135,14 +126,13 @@ def jansoochna_zone(index, k_no, driver, sheet):
 
 
 def starting(real_list, lista, result, mapping_dict):
+    driver = webdriver.Chrome("CHROMEDRIVER_PATH")
     driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-    # driver = webdriver.Chrome("chromedriver.exe")
     x=len(lista)
     for k in range(lista[0],lista[1]):
         distr = real_list[k][1].value
         zone=mapping_dict[distr]
         k_no=real_list[k][3].value
-
         if zone=='Jodhpur':
             status = jodhpur_zone(k_no,driver)
         elif zone=='Jaipur':
@@ -152,12 +142,8 @@ def starting(real_list, lista, result, mapping_dict):
             status = ajmer_zone(k_no, driver)
         else:
             status = jansoochna_zone(k_no, driver)
-
         result.append(status)
-
     driver.close()
-
-
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     error = None
@@ -165,21 +151,16 @@ def login():
         data = pd.read_excel(r'mapping.xlsx')
         df1 = pd.DataFrame(data)
         length = len(df1.index)
-
         mapping_dict={}
-
         for i in range(0,length):
             mapping_dict[df1.iloc[i]['Distributor as per file']]=str(df1.iloc[i]['Zone'])
-
         print(mapping_dict)
-
         f = request.files['file'] 
         # driver = webdriver.Chrome("chromedriver.exe") 
         f.save(f.filename)
         # print(f)  
         df = openpyxl.load_workbook(f)
         sheet = df.active
-
         # driver = webdriver.Chrome("chromedriver.exe")
         # for k in sheet:
         #     if index == 1:
@@ -187,11 +168,9 @@ def login():
         #     else:
         #         if sheet.cell(row=index, column= 1).value == None:
         #             break
-
                 # distr = k[1].value
                 # zone=mapping_dict[distr]
                 # k_no=k[3].value
-
                 # if zone=='Jodhpur':
                 #     jodhpur_zone(index, k_no,driver, sheet)
                 # elif zone=='Jaipur':
@@ -200,9 +179,7 @@ def login():
                 #     ajmer_zone(index, k_no, driver, sheet)
                 # else:
                 #     jansoochna_zone(index, k_no, driver, sheet)
-
                 # df.save('status.xlsx')
-
         z=0
         real_list=[]
         for k in sheet:
@@ -213,55 +190,41 @@ def login():
             if k[1].value==None:
                 continue
             real_list.append(k)
-
         x=len(real_list)
-
         y=int(x/20)
-
         main_list=[[0, y],[y, 2*y],[2*y, 3*y],[3*y, 4*y],[4*y, 5*y],[5*y, 6*y],[6*y, 7*y],[7*y, 8*y],[8*y, 9*y],[9*y, 10*y],
                    [10*y, 11*y],[11*y, 12*y],[12*y, 13*y],[13*y, 14*y],[14*y, 15*y],[15*y, 16*y],[16*y, 17*y],[17*y, 18*y],[18*y, 19*y],[19*y, 20*y+ x %20]]
-
         threads=[]
         results=[]
         for i in range(0,20):
             res=[None]*(y+x%20)
             results.append(res)
-
         for v in range(0,20):
             t=threading.Thread(target=starting, args=(real_list,main_list[v],results[v], mapping_dict))
             t.start()
             threads.append(t)
-
         for v in threads:
             v.join()
-
         print(results)
         main_result=[]
         for v in range(0,20):
             for u in range(0,len(results[v])):
                 if results[v][u]!=None:
                     main_result.append(results[v][u])
-
         index=1
         sheet.cell(row = index, column = 6).value = 'Status'
         df.save('status.xlsx')
         index+=1
-
         for k in range(0,len(main_result)):
             if sheet.cell(row=index, column= 1).value == None:
                 break
-
             sheet.cell(row = index, column = 6).value = main_result[k]
-
             index+=1
             df.save('status.xlsx')
-
-
         # driver.close()
         data = pd.read_excel('status.xlsx')
    
         return render_template("submit.html", data = data.to_html() )
-
 @app.route('/download', methods=['POST', 'GET'])
 def download():
     path="status.xlsx"
