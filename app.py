@@ -68,6 +68,7 @@ def jodhpur_zone(k_no, driver):
     try:
         link = "http://wss.rajdiscoms.com/HDFC_QUICKPAY/index"
         driver.get(link)
+        time.sleep(5)
         driver.find_element_by_id("txtKno").click()
         driver.find_element_by_id("txtKno").clear()
         driver.find_element_by_id("txtKno").send_keys(k_no)
