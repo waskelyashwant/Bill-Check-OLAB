@@ -69,8 +69,6 @@ def jodhpur_zone(k_no, driver):
         print("Inside Jodhpur")
         link = "http://wss.rajdiscoms.com/HDFC_QUICKPAY/index"
         driver.get(link)
-        time.sleep(5)
-        print("waiting")
         driver.find_element_by_id("txtKno").click()
         driver.find_element_by_id("txtKno").clear()
         driver.find_element_by_id("txtKno").send_keys(k_no)
@@ -82,6 +80,7 @@ def jodhpur_zone(k_no, driver):
         print(k_no, status)
         return status
     except:
+        print("unable to check")
         return "Unable to check"
     # sheet.cell(row = index, column = 6).value = status
 def ajmer_zone(index, k_no, driver, sheet):
