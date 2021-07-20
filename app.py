@@ -158,7 +158,11 @@ def starting(real_list, lista, result, mapping_dict):
             status = jansoochna_zone(k_no, driver)
         result.append(status)
 #     driver.close()
-    
+ 
+def test(x):
+    time.sleep(35)
+    print("success")
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     error = None
