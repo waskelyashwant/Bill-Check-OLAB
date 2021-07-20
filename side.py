@@ -138,8 +138,8 @@ def starting(real_list, lista, result, mapping_dict):
         k_no=real_list[k][3].value
         if zone=='Jodhpur':
             # print("Jodhpur")
-            # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-            driver=webdriver.Chrome("chromedriver.exe")
+            driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+            # driver=webdriver.Chrome("chromedriver.exe")
             status = jodhpur_zone(k_no,driver)
             driver.close()
             # print("Processed")
