@@ -167,77 +167,10 @@ def login():
         df1 = pd.DataFrame(data)
         length = len(df1.index)
         mapping_dict={}
-        for i in range(0,length):
-            mapping_dict[df1.iloc[i]['Distributor as per file']]=str(df1.iloc[i]['Zone'])
-        print(mapping_dict)
-        f = request.files['file'] 
-        # driver = webdriver.Chrome("chromedriver.exe") 
-        f.save(f.filename)
-        # print(f)  
-        df = openpyxl.load_workbook(f)
-        sheet = df.active
-        # driver = webdriver.Chrome("chromedriver.exe")
-        # for k in sheet:
-        #     if index == 1:
-        #         sheet.cell(row = index, column = 6).value = 'Status'
-        #     else:
-        #         if sheet.cell(row=index, column= 1).value == None:
-        #             break
-                # distr = k[1].value
-                # zone=mapping_dict[distr]
-                # k_no=k[3].value
-                # if zone=='Jodhpur':
-                #     jodhpur_zone(index, k_no,driver, sheet)
-                # elif zone=='Jaipur':
-                #     jaipur_zone(index, k_no,driver, sheet)
-                # elif zone=='Ajmer':
-                #     ajmer_zone(index, k_no, driver, sheet)
-                # else:
-                #     jansoochna_zone(index, k_no, driver, sheet)
-                # df.save('status.xlsx')
-        z=0
-        real_list=[]
-        for k in sheet:
-            if z==0:
-                z+=1
-                continue
-            k=list(k)
-            if k[1].value==None:
-                continue
-            real_list.append(k)
-        x=len(real_list)
-        y=int(x/20)
-        main_list=[[0, y],[y, 2*y],[2*y, 3*y],[3*y, 4*y],[4*y, 5*y],[5*y, 6*y],[6*y, 7*y],[7*y, 8*y],[8*y, 9*y],[9*y, 10*y],
-                   [10*y, 11*y],[11*y, 12*y],[12*y, 13*y],[13*y, 14*y],[14*y, 15*y],[15*y, 16*y],[16*y, 17*y],[17*y, 18*y],[18*y, 19*y],[19*y, 20*y+ x %20]]
-        threads=[]
-        results=[]
-        for i in range(0,20):
-            res=[None]*(y+x%20)
-            results.append(res)
-
-        for v in range(19,20):
-            t=threading.Thread(target=starting, args=(real_list,main_list[v],results[v], mapping_dict))
-            t.start()
-            threads.append(t)
-        for v in threads:
-            v.join()
-
-        print(results)
-        main_result=[]
-        for v in range(19,20):
-            for u in range(0,len(results[v])):
-                if results[v][u]!=None:
-                    main_result.append(results[v][u])
-        index=1
-        sheet.cell(row = index, column = 6).value = 'Status'
-        df.save('status.xlsx')
-        index+=1
-        for k in range(0,len(main_result)):
-            if sheet.cell(row=index, column= 1).value == None:
-                break
-            sheet.cell(row = index, column = 6).value = main_result[k]
-            index+=1
-            df.save('status.xlsx')
+        
+        print("Execution start")
+        time.sleep(35)
+        print("Execution done")
         # driver.close()
         data = pd.read_excel('status.xlsx')
    
