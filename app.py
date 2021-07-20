@@ -10,6 +10,8 @@ import os
 import time
 import pandas as pd
 import threading
+import subprocess
+
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
