@@ -168,9 +168,12 @@ def login():
         length = len(df1.index)
         mapping_dict={}
         
+        t=threading(target=test,args=(35))
         print("Execution start")
-        time.sleep(35)
-        print("Execution done")
+        t.start()
+        render_template("app.html")
+        
+        t.join()
         # driver.close()
         data = pd.read_excel('status.xlsx')
    
