@@ -145,6 +145,7 @@ def starting(real_list, lista, result, mapping_dict):
             # status = jodhpur_zone(k_no,driver)
             # driver.close()
             print("Processed")
+            status="trial"
         elif zone=='Jaipur':
             ags = real_list[k][4].value
             status = jaipur_zone(k_no,driver,ags)
