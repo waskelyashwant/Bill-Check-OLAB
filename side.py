@@ -136,13 +136,15 @@ def starting(real_list, lista, result, mapping_dict):
         distr = real_list[k][1].value
         zone=mapping_dict[distr]
         k_no=real_list[k][3].value
+        print(distr, zone, k_no)
+        time.sleep(5)
         if zone=='Jodhpur':
-            print("Jodhpur")
-            driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+            # print("Jodhpur")
+            # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
             # driver=webdriver.Chrome("chromedriver.exe")
-            status = jodhpur_zone(k_no,driver)
-            driver.close()
-            # print("Processed")
+            # status = jodhpur_zone(k_no,driver)
+            # driver.close()
+            print("Processed")
         elif zone=='Jaipur':
             ags = real_list[k][4].value
             status = jaipur_zone(k_no,driver,ags)
