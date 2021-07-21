@@ -65,23 +65,23 @@ def jaipur_zone(k_no, driver,ags):
 
 
 def jodhpur_zone(k_no, driver):
-    try:
-        print("Inside Jodhpur")
-        link = "http://wss.rajdiscoms.com/HDFC_QUICKPAY/index"
-        driver.get(link)
-        driver.find_element_by_id("txtKno").click()
-        driver.find_element_by_id("txtKno").clear()
-        driver.find_element_by_id("txtKno").send_keys(k_no)
-        driver.find_element_by_id("txtEmail").click()
-        driver.find_element_by_id("txtEmail").clear()
-        driver.find_element_by_id("txtEmail").send_keys("admin@gmail.com")
-        driver.find_element_by_id("btnsearch").click()
-        status = driver.find_element_by_id("lblMessage").text
-        print(k_no, status)
-        return status
-    except:
-        print("unable to check")
-        return "Unable to check"
+    # try:
+    print("Inside Jodhpur")
+    link = "http://wss.rajdiscoms.com/HDFC_QUICKPAY/index"
+    driver.get(link)
+    driver.find_element_by_id("txtKno").click()
+    driver.find_element_by_id("txtKno").clear()
+    driver.find_element_by_id("txtKno").send_keys(k_no)
+    driver.find_element_by_id("txtEmail").click()
+    driver.find_element_by_id("txtEmail").clear()
+    driver.find_element_by_id("txtEmail").send_keys("admin@gmail.com")
+    driver.find_element_by_id("btnsearch").click()
+    status = driver.find_element_by_id("lblMessage").text
+    print(k_no, status)
+    return status
+    # except:
+        # print("unable to check")
+        # return "Unable to check"
     # sheet.cell(row = index, column = 6).value = status
 
 
@@ -140,12 +140,11 @@ def starting(real_list, lista, result, mapping_dict):
         time.sleep(5)
         if zone=='Jodhpur':
             # print("Jodhpur")
-            # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+            driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
             # driver=webdriver.Chrome("chromedriver.exe")
-            # status = jodhpur_zone(k_no,driver)
-            # driver.close()
+            status = jodhpur_zone(k_no,driver)
+            driver.close()
             print("Processed")
-            status="trial"
         elif zone=='Jaipur':
             ags = real_list[k][4].value
             status = jaipur_zone(k_no,driver,ags)
