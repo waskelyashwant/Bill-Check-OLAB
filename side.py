@@ -65,23 +65,23 @@ def jaipur_zone(k_no, driver,ags):
 
 
 def jodhpur_zone(k_no, driver):
-    # try:
-    print("Inside Jodhpur")
-    link = "http://wss.rajdiscoms.com/HDFC_QUICKPAY/index"
-    driver.get(link)
-    driver.find_element_by_id("txtKno").click()
-    driver.find_element_by_id("txtKno").clear()
-    driver.find_element_by_id("txtKno").send_keys(k_no)
-    driver.find_element_by_id("txtEmail").click()
-    driver.find_element_by_id("txtEmail").clear()
-    driver.find_element_by_id("txtEmail").send_keys("admin@gmail.com")
-    driver.find_element_by_id("btnsearch").click()
-    status = driver.find_element_by_id("lblMessage").text
-    print(k_no, status)
-    return status
-    # except:
-        # print("unable to check")
-        # return "Unable to check"
+    try:
+        print("Inside Jodhpur")
+        link = "http://wss.rajdiscoms.com/HDFC_QUICKPAY/index"
+        driver.get(link)
+        driver.find_element_by_id("txtKno").click()
+        driver.find_element_by_id("txtKno").clear()
+        driver.find_element_by_id("txtKno").send_keys(k_no)
+        driver.find_element_by_id("txtEmail").click()
+        driver.find_element_by_id("txtEmail").clear()
+        driver.find_element_by_id("txtEmail").send_keys("admin@gmail.com")
+        driver.find_element_by_id("btnsearch").click()
+        status = driver.find_element_by_id("lblMessage").text
+        print(k_no, status)
+        return status
+    except:
+        print("unable to check")
+        return "Unable to check"
     # sheet.cell(row = index, column = 6).value = status
 
 
@@ -130,20 +130,20 @@ def jansoochna_zone(index, k_no, driver, sheet):
 
 
 def starting(real_list, lista, result, mapping_dict):
-#     driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
     x=len(lista)
     for k in range(lista[0],lista[1]):
         distr = real_list[k][1].value
         zone=mapping_dict[distr]
         k_no=real_list[k][3].value
         print(distr, zone, k_no)
-        time.sleep(5)
+        # time.sleep(5)
         if zone=='Jodhpur':
             # print("Jodhpur")
-            driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+            # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
             # driver=webdriver.Chrome("chromedriver.exe")
             status = jodhpur_zone(k_no,driver)
-            driver.close()
+            # driver.close()
             print("Processed")
         elif zone=='Jaipur':
             ags = real_list[k][4].value
@@ -153,6 +153,7 @@ def starting(real_list, lista, result, mapping_dict):
         else:
             status = jansoochna_zone(k_no, driver)
         result.append(status)
+    driver.close()
 
 
 data = pd.read_excel(r'mapping.xlsx')
