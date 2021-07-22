@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -35,14 +34,17 @@
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
         <!--Form-->
-        <div>
+        <!-- <div>
         {{data| safe}}
-        </div>
+        </div> -->
 
-
-        <form action="{{url_for('download')}}" method="POST" >
-            <button class="btn"><i class="fa fa-download"></i> Download</button>
+        <form action="{{url_for('refresh')}}" method="POST" >
+            <button class="btn"><i class="fa fa-download"></i>Refresh</button>
         </form>
+
+        <!-- <form action="{{url_for('download')}}" method="POST" >
+            <button class="btn"><i class="fa fa-download"></i> Download</button>
+        </form> -->
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}
       {% endif %}
