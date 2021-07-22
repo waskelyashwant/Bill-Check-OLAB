@@ -130,7 +130,8 @@ def jansoochna_zone(index, k_no, driver, sheet):
 
 
 def starting(real_list, lista, result, mapping_dict):
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
+    # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
+    driver=webdriver.Chrome("chromedriver.exe")
     x=len(lista)
     for k in range(lista[0],lista[1]):
         distr = real_list[k][1].value
@@ -184,6 +185,9 @@ x=len(real_list)
 y=int(x/20)
 main_list=[[0, y],[y, 2*y],[2*y, 3*y],[3*y, 4*y],[4*y, 5*y],[5*y, 6*y],[6*y, 7*y],[7*y, 8*y],[8*y, 9*y],[9*y, 10*y],
            [10*y, 11*y],[11*y, 12*y],[12*y, 13*y],[13*y, 14*y],[14*y, 15*y],[15*y, 16*y],[16*y, 17*y],[17*y, 18*y],[18*y, 19*y],[19*y, 20*y+ x %20]]
+
+# y=int(x/5)
+
 threads=[]
 results=[]
 for i in range(0,20):
@@ -213,3 +217,7 @@ for k in range(0,len(main_result)):
     sheet.cell(row = index, column = 6).value = main_result[k]
     index+=1
     df.save('status.xlsx')
+
+file1 = open("value.txt","w")
+file1.write("1")
+file1.close() 
