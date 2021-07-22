@@ -187,15 +187,15 @@ x=len(real_list)
 #            [10*y, 11*y],[11*y, 12*y],[12*y, 13*y],[13*y, 14*y],[14*y, 15*y],[15*y, 16*y],[16*y, 17*y],[17*y, 18*y],[18*y, 19*y],[19*y, 20*y+ x %20]]
 
 y=int(x/4)
-main_list=[[0,y], [y, 2*y], [2*y, 3*y] , [3*y, 4*y + x%4]] #, [4*y, 5*y + x%5]]
+main_list=[[0,y], [y, 2*y], [2*y, 3*y + x%3]] # , [3*y, 4*y + x%4]] #, [4*y, 5*y + x%5]]
 
 threads=[]
 results=[]
-for i in range(0,4):
-    res=[None]*(y+x%4)
+for i in range(0,3):
+    res=[None]*(y+x%3)
     results.append(res)
 
-for v in range(0,4):
+for v in range(0,3):
     t=threading.Thread(target=starting, args=(real_list,main_list[v],results[v], mapping_dict))
     t.start()
     threads.append(t)
@@ -204,7 +204,7 @@ for v in threads:
 
 print(results)
 main_result=[]
-for v in range(0,4):
+for v in range(0,3):
     length = main_list[v][1] - main_list[v][0]
     flag=0
     for u in range(0,len(results[v])):
