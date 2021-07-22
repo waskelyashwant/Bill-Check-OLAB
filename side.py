@@ -194,7 +194,7 @@ for i in range(0,20):
     res=[None]*(y+x%20)
     results.append(res)
 
-for v in range(19,20):
+for v in range(0,20):
     t=threading.Thread(target=starting, args=(real_list,main_list[v],results[v], mapping_dict))
     t.start()
     threads.append(t)
@@ -203,7 +203,7 @@ for v in threads:
 
 print(results)
 main_result=[]
-for v in range(19,20):
+for v in range(0,20):
     for u in range(0,len(results[v])):
         if results[v][u]!=None:
             main_result.append(results[v][u])
