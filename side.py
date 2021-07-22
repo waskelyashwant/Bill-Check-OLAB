@@ -205,9 +205,16 @@ for v in threads:
 print(results)
 main_result=[]
 for v in range(0,4):
+    length = main_list[v][1] - main_list[v][0]
+    flag=0
     for u in range(0,len(results[v])):
         if results[v][u]!=None:
+            flag=1
             main_result.append(results[v][u])
+    if flag==0:
+        for i in range(0,length):
+            main_result.append("Crashed")
+            
 index=1
 sheet.cell(row = index, column = 6).value = 'Status'
 df.save('status.xlsx')
