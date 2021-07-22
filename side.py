@@ -130,8 +130,8 @@ def jansoochna_zone(index, k_no, driver, sheet):
 
 
 def starting(real_list, lista, result, mapping_dict):
-    # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
-    driver=webdriver.Chrome("chromedriver.exe")
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
+    # driver=webdriver.Chrome("chromedriver.exe")
     x=len(lista)
     for k in range(lista[0],lista[1]):
         distr = real_list[k][1].value
@@ -147,7 +147,7 @@ def starting(real_list, lista, result, mapping_dict):
             # driver.close()
             print("Processed")
 
-        elif zone=='Jaipur' || zone="Bharatpur" || zone="Bikaner" || zone="Kota" || zone="TP":
+        elif zone=='Jaipur' or zone=="Bharatpur" or zone=="Bikaner" or zone=="Kota" or zone=="TP":
             ags = real_list[k][4].value
             status = amazon_zone(k_no,driver,ags)
         elif zone=='Ajmer':
@@ -187,16 +187,16 @@ x=len(real_list)
 # main_list=[[0, y],[y, 2*y],[2*y, 3*y],[3*y, 4*y],[4*y, 5*y],[5*y, 6*y],[6*y, 7*y],[7*y, 8*y],[8*y, 9*y],[9*y, 10*y],
 #            [10*y, 11*y],[11*y, 12*y],[12*y, 13*y],[13*y, 14*y],[14*y, 15*y],[15*y, 16*y],[16*y, 17*y],[17*y, 18*y],[18*y, 19*y],[19*y, 20*y+ x %20]]
 
-y=int(x/5)
-main_list=[[0,y], [y, 2*y], [2*y, 3*y], [3*y, 4*y], [4*y, 5*y + x%5]]
+y=int(x/3)
+main_list=[[0,y], [y, 2*y], [2*y, 3*y+x%3]]
 
 threads=[]
 results=[]
-for i in range(0,5):
-    res=[None]*(y+x%5)
+for i in range(0,3):
+    res=[None]*(y+x%3)
     results.append(res)
 
-for v in range(0,5):
+for v in range(0,3):
     t=threading.Thread(target=starting, args=(real_list,main_list[v],results[v], mapping_dict))
     t.start()
     threads.append(t)
@@ -205,7 +205,7 @@ for v in threads:
 
 print(results)
 main_result=[]
-for v in range(0,5):
+for v in range(0,3):
     length = main_list[v][1] - main_list[v][0]
     flag=0
     for u in range(0,len(results[v])):
