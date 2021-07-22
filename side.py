@@ -186,16 +186,16 @@ x=len(real_list)
 # main_list=[[0, y],[y, 2*y],[2*y, 3*y],[3*y, 4*y],[4*y, 5*y],[5*y, 6*y],[6*y, 7*y],[7*y, 8*y],[8*y, 9*y],[9*y, 10*y],
 #            [10*y, 11*y],[11*y, 12*y],[12*y, 13*y],[13*y, 14*y],[14*y, 15*y],[15*y, 16*y],[16*y, 17*y],[17*y, 18*y],[18*y, 19*y],[19*y, 20*y+ x %20]]
 
-y=int(x/2)
-main_list=[[0,y], [y, 2*y + x%2]]
+y=int(x/5)
+main_list=[[0,y], [y, 2*y], [3*y, 4*y], [4*y, 5*y + x%5]]
 
 threads=[]
 results=[]
-for i in range(0,2):
-    res=[None]*(y+x%2)
+for i in range(0,5):
+    res=[None]*(y+x%5)
     results.append(res)
 
-for v in range(0,2):
+for v in range(0,5):
     t=threading.Thread(target=starting, args=(real_list,main_list[v],results[v], mapping_dict))
     t.start()
     threads.append(t)
@@ -204,7 +204,7 @@ for v in threads:
 
 print(results)
 main_result=[]
-for v in range(0,2):
+for v in range(0,5):
     for u in range(0,len(results[v])):
         if results[v][u]!=None:
             main_result.append(results[v][u])
