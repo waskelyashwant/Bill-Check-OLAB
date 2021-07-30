@@ -50,6 +50,14 @@ def login():
         sheet = df.active
 
         df.save("bill_file.xlsx")
+        
+        data = pd.read_excel(r'bill_file.xlsx')
+        df1 = pd.DataFrame(data)
+        length = len(df1.index)
+
+        totalfile=open("total.txt", "w")
+        totalfile.write(str(length))
+        totalfile.close()
    
         subprocess.Popen(["python", "side.py"])
 
