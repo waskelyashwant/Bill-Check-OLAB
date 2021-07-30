@@ -232,12 +232,12 @@ for v in range(0,3):
         for i in range(0,length):
             main_result.append("crashed")
 
-file1 = open("count.txt","r")
-x = file1.read()
-file1.close() 
+# file1 = open("count.txt","r")
+# x = file1.read()
+# file1.close() 
 
 file1 = open("count.txt","w")
-file1.write(x + " Creating file")
+file1.write(" Creating file")
 file1.close()
             
 index=1
@@ -252,7 +252,7 @@ for k in range(0,len(main_result)):
     print("Creating file")
     df.save('status.xlsx')
     file1 = open("count.txt","w")
-    file1.write(x + " Creating file and processed upto " + str(k))
+    file1.write(" Creating file and processed upto " + str(k))
     file1.close()
 
 file1 = open("value.txt","w")
