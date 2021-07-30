@@ -81,9 +81,9 @@ def refresh():
     	count=open("count.txt", "r")
     	data = count.read()
     	count.close()
-        totalfile=open("total.txt", "r")
-        total = totalfile.read()
-        totalfile.close()
+    	totalfile=open("total.txt", "r")
+    	total = totalfile.read()
+    	totalfile.close()
     	return render_template("submit.html", data = data, total = total)
 
 
