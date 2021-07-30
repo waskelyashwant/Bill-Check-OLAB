@@ -140,12 +140,10 @@ def starting(real_list, lista, result, mapping_dict):
         print(distr, zone, k_no)
         # time.sleep(5)
         count=0
-        try:
-            countfile = open("count.txt", "r")
-            count = countfile.read()
-            countfile.close()
-        except:
-            pass
+        countfile = open("count.txt", "r")
+        count = countfile.read()
+        countfile.close()
+        
         # print(count)
         # print(type(count))
         # count=int(count)
