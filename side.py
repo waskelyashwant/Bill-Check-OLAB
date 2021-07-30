@@ -139,6 +139,17 @@ def starting(real_list, lista, result, mapping_dict):
         k_no=real_list[k][3].value
         print(distr, zone, k_no)
         # time.sleep(5)
+        countfile = open("count.txt", "r")
+        count = countfile.read()
+        countfile.close()
+        print(count)
+        print(type(count))
+        count=int(count)
+        print(count)
+        file1 = open("count.txt","w")
+        file1.write(str(int(count)+1))
+        file1.close()
+        
         if zone=='Jodhpur':
             # print("Jodhpur")
             # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
@@ -216,6 +227,14 @@ for v in range(0,3):
         for i in range(0,length):
             main_result.append("crashed")
 
+file1 = open("count.txt","r")
+x = file1.read()
+file1.close() 
+
+file1 = open("count.txt","w")
+file1.write(x + " Creating file")
+file1.close()
+            
 index=1
 sheet.cell(row = index, column = 6).value = 'Status'
 df.save('status.xlsx')
@@ -227,6 +246,9 @@ for k in range(0,len(main_result)):
     index+=1
     print("Creating file")
     df.save('status.xlsx')
+    file1 = open("count.txt","w")
+    file1.write(x + " Creating file and processed upto " + str(index))
+    file1.close()
 
 file1 = open("value.txt","w")
 file1.write("1")
