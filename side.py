@@ -244,7 +244,7 @@ for k in range(0,len(main_result)):
     print("Creating file")
     df.save('status.xlsx')
     file1 = open("count.txt","w")
-    file1.write(x + " Creating file and processed upto " + str(index))
+    file1.write(x + " Creating file and processed upto " + str(k))
     file1.close()
 
 file1 = open("value.txt","w")
