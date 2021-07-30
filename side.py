@@ -142,10 +142,7 @@ def starting(real_list, lista, result, mapping_dict):
         countfile = open("count.txt", "r")
         count = countfile.read()
         countfile.close()
-        print(count)
-        print(type(count))
-        count=int(count)
-        print(count)
+        
         file1 = open("count.txt","w")
         file1.write(str(int(count)+1))
         file1.close()
@@ -199,7 +196,7 @@ x=len(real_list)
 #            [10*y, 11*y],[11*y, 12*y],[12*y, 13*y],[13*y, 14*y],[14*y, 15*y],[15*y, 16*y],[16*y, 17*y],[17*y, 18*y],[18*y, 19*y],[19*y, 20*y+ x %20]]
 
 y=int(x/3)
-main_list=[[0,y], [y, 2*y], [2*y, 3*y+x%3]]
+main_list=[[0,y], [y, 2*y], [2*y, 3*y + x%3]]
 
 threads=[]
 results=[]
