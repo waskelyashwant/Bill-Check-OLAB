@@ -225,6 +225,7 @@ for k in range(0,len(main_result)):
         break
     sheet.cell(row = index, column = 6).value = main_result[k]
     index+=1
+    print("Creating file")
     df.save('status.xlsx')
 
 file1 = open("value.txt","w")
