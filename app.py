@@ -81,7 +81,10 @@ def refresh():
     	count=open("count.txt", "r")
     	data = count.read()
     	count.close()
-    	return render_template("submit.html", data = data)
+        totalfile=open("total.txt", "r")
+        total = totalfile.read()
+        totalfile.close()
+    	return render_template("submit.html", data = data, total = total)
 
 
 @app.route('/download', methods=['POST', 'GET'])
