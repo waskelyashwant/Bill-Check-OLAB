@@ -37,6 +37,10 @@ def login():
         file1.write("-1")
         file1.close() 
 
+        count=open("count.txt", "w")
+        data = count.write("0")
+        count.close()
+
         f = request.files['file'] 
         # driver = webdriver.Chrome("chromedriver.exe") 
         f.save(f.filename)
@@ -59,13 +63,17 @@ def refresh():
     f = open("value.txt", "r")
     val = f.read()
     print(val)
+    f.close()
     if val == "1":
         print("inside value")
         path="status.xlsx"
         return send_file(path, as_attachment=True)
         # return redirect("http://127.0.0.1:5000/download")
     else :
-        return render_template("submit.html")
+    	count=open("count.txt", "r")
+    	data = count.read()
+    	count.close()
+    	return render_template("submit.html", data = data)
 
 
 @app.route('/download', methods=['POST', 'GET'])
