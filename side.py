@@ -139,13 +139,23 @@ def starting(real_list, lista, result, mapping_dict):
         k_no=real_list[k][3].value
         print(distr, zone, k_no)
         # time.sleep(5)
-        countfile = open("count.txt", "r")
-        count = countfile.read()
-        countfile.close()
-        
-        file1 = open("count.txt","w")
-        file1.write(str(int(count)+1))
-        file1.close()
+        count=0
+        try:
+            countfile = open("count.txt", "r")
+            count = countfile.read()
+            countfile.close()
+        except:
+            pass
+        # print(count)
+        # print(type(count))
+        # count=int(count)
+        # print(count)
+        try:
+            file1 = open("count.txt","w")
+            file1.write(str(int(count)+1))
+            file1.close()
+        except:
+            pass
         
         if zone=='Jodhpur':
             # print("Jodhpur")
