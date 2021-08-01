@@ -52,6 +52,10 @@ def login():
         count=open("count.txt", "w")
         count.write("")
         count.close()
+        
+        stopfile = open("stop.txt", "w")
+        stopfile.write("0")
+        stopfile.close()
 
         f = request.files['file'] 
         # driver = webdriver.Chrome("chromedriver.exe") 
@@ -68,7 +72,7 @@ def login():
         length = len(df1.index)
 
         totalfile=open("total.txt", "w")
-        totalfile.write(str(length))
+        totalfile.write(str(length) + " completed")
         totalfile.close()
    
         subprocess.Popen(["python", "side.py"])
@@ -115,6 +119,24 @@ def refresh():
     	total = totalfile.read()
     	totalfile.close()
     	return render_template("submit.html", data = str(data) , total = total)
+
+@app.route('/stop', methods=['POST', 'GET'])
+def stop():
+    stopfile = open("stop.txt", "r")
+    value= stopfile.read()
+    stopfile.close()
+
+    if value=="1":
+    	data="Script is already stopped. Wait for the file to generate and click on REFRESH button to get the new info"
+    	total=" "
+    	return render_template("submit.html", data = str(data), total = total)
+
+    stopfile = open("stop.txt", "w")
+    stopfile.write("1")
+    stopfile.close()
+    data="Script is stopped. Wait for the file to generate and click on REFRESH button to get the new info"
+    total = " "
+    return render_template("submit.html", data = str(data), total = total)
 
 
 @app.route('/download', methods=['POST', 'GET'])
