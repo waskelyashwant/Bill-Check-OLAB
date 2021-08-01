@@ -137,9 +137,9 @@ def starting(real_list, lista, result, mapping_dict, count_i):
         distr = real_list[k][1].value
         zone=mapping_dict[distr]
         k_no=real_list[k][3].value
-        print(distr, zone, k_no)
+        # print(distr, zone, k_no)
         # time.sleep(5)
-        count=0
+
         countfile = open("count" + str(count_i) + ".txt", "r")
         count = countfile.read()
         countfile.close()
@@ -147,12 +147,7 @@ def starting(real_list, lista, result, mapping_dict, count_i):
         file1 = open("count" + str(count_i) + ".txt","w")
         file1.write(str(int(count)+1))
         file1.close()
-        
-        # print(count)
-        # print(type(count))
-        # count=int(count)
-        # print(count)
-        
+
         if zone=='Jodhpur':
             # print("Jodhpur")
             # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
@@ -168,9 +163,18 @@ def starting(real_list, lista, result, mapping_dict, count_i):
             status = ajmer_zone(k_no, driver)
         else:
             status = jansoochna_zone(k_no, driver)
-        result.append(status)
-    driver.close()
 
+        result.append(status)
+
+        stopfile = open("stop.txt", "r")
+        stopvalue = stopfile.read()
+        stopfile.close()
+
+        if stopvalue == "1":
+            driver.close()
+            return
+
+    driver.close()
 
 data = pd.read_excel(r'mapping.xlsx')
 df1 = pd.DataFrame(data)
@@ -181,7 +185,7 @@ for i in range(0,length):
 print(mapping_dict)
 
 # print(f)  
-f="bill_file.xlsx"
+f="JDP.xlsx"
 
 df = openpyxl.load_workbook(f)
 sheet = df.active
@@ -197,8 +201,8 @@ for k in sheet:
         continue
     real_list.append(k)
 x=len(real_list)
-# y=int(x/20)
-# main_list=[[0, y],[y, 2*y],[2*y, 3*y],[3*y, 4*y],[4*y, 5*y],[5*y, 6*y],[6*y, 7*y],[7*y, 8*y],[8*y, 9*y],[9*y, 10*y],
+# y=int(x/10)
+# main_list=[[0, y],[y, 2*y],[2*y, 3*y],[3*y, 4*y],[4*y, 5*y],[5*y, 6*y],[6*y, 7*y],[7*y, 8*y],[8*y, 9*y],[9*y, 10*y + x%10]]
 #            [10*y, 11*y],[11*y, 12*y],[12*y, 13*y],[13*y, 14*y],[14*y, 15*y],[15*y, 16*y],[16*y, 17*y],[17*y, 18*y],[18*y, 19*y],[19*y, 20*y+ x %20]]
 
 y=int(x/3)
@@ -218,26 +222,31 @@ for v in threads:
     v.join()
 
 print(results)
+
 main_result=[]
 for v in range(0,3):
-    length = main_list[v][1] - main_list[v][0]
+    length = main_list[v][1] - main_list[0][0]
     flag=0
     for u in range(0,len(results[v])):
         if results[v][u]!=None:
             flag=1
             main_result.append(results[v][u])
+
+    l=len(main_result)
+
+    if flag==1 and l!=length:
+        while l!=length:
+            main_result.append(" ")
+            l+=1
+
     if flag==0:
         for i in range(0,length):
             main_result.append("crashed")
 
 # file1 = open("count.txt","r")
 # x = file1.read()
-# file1.close() 
+# file1.close()
 
-file1 = open("count.txt","w")
-file1.write(" Creating file")
-file1.close()
-            
 index=1
 sheet.cell(row = index, column = 6).value = 'Status'
 df.save('status.xlsx')
@@ -247,12 +256,11 @@ for k in range(0,len(main_result)):
         break
     sheet.cell(row = index, column = 6).value = main_result[k]
     index+=1
-    print("Creating file")
     df.save('status.xlsx')
     file1 = open("count.txt","w")
-    file1.write("Creating file and processed upto " + str(index))
+    file1.write("Creating file and processed upto " + str(k))
     file1.close()
 
 file1 = open("value.txt","w")
 file1.write("1")
-file1.close()
+file1.close() 
