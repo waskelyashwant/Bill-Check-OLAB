@@ -185,7 +185,7 @@ for i in range(0,length):
 print(mapping_dict)
 
 # print(f)  
-f="JDP.xlsx"
+f="bill_file.xlsx"
 
 df = openpyxl.load_workbook(f)
 sheet = df.active
