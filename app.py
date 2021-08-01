@@ -37,8 +37,20 @@ def login():
         file1.write("-1")
         file1.close() 
 
+        count=open("count1.txt", "w")
+        count.write("0")
+        count.close()
+
+        count=open("count2.txt", "w")
+        count.write("0")
+        count.close()
+
+        count=open("count3.txt", "w")
+        count.write("0")
+        count.close()
+        
         count=open("count.txt", "w")
-        data = count.write("0")
+        count.write("")
         count.close()
 
         f = request.files['file'] 
@@ -78,13 +90,31 @@ def refresh():
         return send_file(path, as_attachment=True)
         # return redirect("http://127.0.0.1:5000/download")
     else :
-    	count=open("count.txt", "r")
-    	data = count.read()
+    	count=open("count0.txt", "r")
+    	data1 = count.read()
     	count.close()
+
+    	count=open("count1.txt", "r")
+    	data2 = count.read()
+    	count.close()
+
+    	count=open("count2.txt", "r")
+    	data3 = count.read()
+    	count.close()
+
+    	data=int(data1) + int(data2) + int(data3)
+        
+    	count = open("count.txt", "r")
+    	line = count.read()
+    	count.close()
+
+    	if line != "":
+    		data = line
+        
     	totalfile=open("total.txt", "r")
     	total = totalfile.read()
     	totalfile.close()
-    	return render_template("submit.html", data = data, total = total)
+    	return render_template("submit.html", data = str(data) , total = total)
 
 
 @app.route('/download', methods=['POST', 'GET'])
