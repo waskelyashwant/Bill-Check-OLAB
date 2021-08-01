@@ -37,15 +37,15 @@ def login():
         file1.write("-1")
         file1.close() 
 
+        count=open("count0.txt", "w")
+        count.write("0")
+        count.close()
+
         count=open("count1.txt", "w")
         count.write("0")
         count.close()
 
         count=open("count2.txt", "w")
-        count.write("0")
-        count.close()
-
-        count=open("count3.txt", "w")
         count.write("0")
         count.close()
         
