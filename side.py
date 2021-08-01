@@ -129,7 +129,7 @@ def jansoochna_zone(index, k_no, driver, sheet):
 
 
 
-def starting(real_list, lista, result, mapping_dict):
+def starting(real_list, lista, result, mapping_dict, count_i):
     driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
     # driver=webdriver.Chrome("chromedriver.exe")
     x=len(lista)
@@ -140,20 +140,18 @@ def starting(real_list, lista, result, mapping_dict):
         print(distr, zone, k_no)
         # time.sleep(5)
         count=0
-        countfile = open("count.txt", "r")
+        countfile = open("count" + str(count_i) + ".txt", "r")
         count = countfile.read()
         countfile.close()
+        
+        file1 = open("count" + str(count_i) + ".txt","w")
+        file1.write(str(int(count)+1))
+        file1.close()
         
         # print(count)
         # print(type(count))
         # count=int(count)
         # print(count)
-        try:
-            file1 = open("count.txt","w")
-            file1.write(str(int(count)+1))
-            file1.close()
-        except:
-            pass
         
         if zone=='Jodhpur':
             # print("Jodhpur")
@@ -213,7 +211,7 @@ for i in range(0,3):
     results.append(res)
 
 for v in range(0,3):
-    t=threading.Thread(target=starting, args=(real_list,main_list[v],results[v], mapping_dict))
+    t=threading.Thread(target=starting, args=(real_list,main_list[v],results[v], mapping_dict, v))
     t.start()
     threads.append(t)
 for v in threads:
@@ -252,7 +250,7 @@ for k in range(0,len(main_result)):
     print("Creating file")
     df.save('status.xlsx')
     file1 = open("count.txt","w")
-    file1.write(" Creating file and processed upto " + str(k))
+    file1.write("Creating file and processed upto " + str(index))
     file1.close()
 
 file1 = open("value.txt","w")
