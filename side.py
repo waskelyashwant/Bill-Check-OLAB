@@ -19,7 +19,7 @@ chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 
-
+index=1
 def amazon_zone(k_no, driver,ags):
     try:
         link = "https://www.amazon.in/hfc/bill/electricity?ref_=apay_deskhome_Electricity"
@@ -69,7 +69,7 @@ def jodhpur_zone(k_no, driver):
         print("Inside Jodhpur")
         link = "http://wss.rajdiscoms.com/HDFC_QUICKPAY/index"
         driver.get(link)
-        driver.find_element_by_id("txtKno").click()
+        driver.find_element("txtKno").click()
         driver.find_element_by_id("txtKno").clear()
         driver.find_element_by_id("txtKno").send_keys(k_no)
         driver.find_element_by_id("txtEmail").click()
@@ -107,34 +107,46 @@ def ajmer_zone(index, k_no, driver, sheet):
         df.save('status.xlsx')
 
 
-def jansoochna_zone(index, k_no, driver, sheet):
-    link = "https://jansoochna.rajasthan.gov.in/Services/DynamicControls"
-    driver.get(link)
-    driver.find_element_by_partial_link_text("Know about your Electricity Bill Payment Information - JDVVNL").click()
-    time.sleep(2)
+def jansoochna_zone(index,k_no, driver, sheet):
+   
+    driver.get("https://jansoochna.rajasthan.gov.in/Services/GetMoreData?q=JCACQCaD+3XgInUhpVFB7o2qwthlQZhN7UkRZpQ+OEo=")
+    #driver.find_element_by_partial_link_text("Know about your Electricity Bill Payment Information - JDVVNL").click()
     driver.find_element_by_id("Enter_your_K_number").click()
     driver.find_element_by_id("Enter_your_K_number").clear()
-    driver.find_element_by_id("Enter_your_K_number").send_keys(k_no.value)  
+    driver.find_element_by_id("Enter_your_K_number").send_keys(k_no)  
     driver.find_element_by_id("btnSubmit").click()
     time.sleep(2)   
     amnt= driver.find_element_by_xpath("/html/body/div[1]/section/div[3]/div/div/div/div/div[3]/div[2]/div/div[1]/div[2]/table/tbody/tr[1]/td[12]")
     amnt = amnt.get_attribute("innerHTML")
-    print(amnt)
     dat =  driver.find_element_by_xpath("/html/body/div[1]/section/div[3]/div/div/div/div/div[3]/div[2]/div/div[1]/div[2]/table/tbody/tr[1]/td[13]")
     dat = dat.get_attribute("innerHTML")
-    if amnt==str(sheet.cell(row=index, column=4).value):
+    
+        
+    if amnt==str(sheet.cell(row=index, column=5).value):
+       
+        
         sheet.cell(row = index, column = 6).value = "paid"
+        status= sheet.cell(row = index, column = 6).value = "paid"
+        return status
     else:
+      
         sheet.cell(row = index, column = 6).value = "unpaid"
+        status= sheet.cell(row = index, column = 6).value
+        return status
+    
 
 
 
-def starting(real_list, lista, result, mapping_dict, count_i):
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
-    # driver=webdriver.Chrome("chromedriver.exe")
+
+def starting(c,real_list, lista, result, mapping_dict, count_i):
+    #driver = webdriver.Chrome(executable_path=os.environ.get("chromedriver.exe"), options=chrome_options)
+    driver=webdriver.Chrome("C:/Users/tanisha/Downloads/Bill-Check-OLAB-master/Bill-Check-OLAB-master/chromedriver.exe")
+    #print(driver)
     x=len(lista)
     for k in range(lista[0],lista[1]):
+        
         distr = real_list[k][1].value
+        print(distr)
         zone=mapping_dict[distr]
         k_no=real_list[k][3].value
         # print(distr, zone, k_no)
@@ -147,14 +159,19 @@ def starting(real_list, lista, result, mapping_dict, count_i):
         file1 = open("count" + str(count_i) + ".txt","w")
         file1.write(str(int(count)+1))
         file1.close()
-
+        print(zone)
+        
         if zone=='Jodhpur':
             # print("Jodhpur")
             # driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
             # driver=webdriver.Chrome("chromedriver.exe")
-            status = jodhpur_zone(k_no,driver)
+            
+            status = jansoochna_zone(c,k_no, driver,sheet)
+            
             # driver.close()
             print("Processed")
+            print(status)
+            
 
         elif zone=='Jaipur' or zone=="Bharatpur" or zone=="Bikaner" or zone=="Kota" or zone=="TP":
             ags = real_list[k][4].value
@@ -207,7 +224,7 @@ x=len(real_list)
 
 y=int(x/3)
 main_list=[[0,y], [y, 2*y], [2*y, 3*y + x%3]]
-
+c=2
 threads=[]
 results=[]
 for i in range(0,3):
@@ -215,7 +232,9 @@ for i in range(0,3):
     results.append(res)
 
 for v in range(0,3):
-    t=threading.Thread(target=starting, args=(real_list,main_list[v],results[v], mapping_dict, v))
+    
+    t=threading.Thread(target=starting, args=(c,real_list,main_list[v],results[v], mapping_dict, v))
+    c=c+1
     t.start()
     threads.append(t)
 for v in threads:
